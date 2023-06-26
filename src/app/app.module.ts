@@ -3,13 +3,15 @@ import { BrowserModule } from '@angular/platform-browser';
 import { ReactiveFormsModule } from '@angular/forms';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { EffectsModule } from '@ngrx/effects';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthModule } from './auth/auth.module';
 import { TopBarModule } from './shared/modules/topBar/topBar.module';
+import { PersistanceService } from './shared/services/persistance.service';
+import { AuthInterceptor } from './shared/services/authinterceptor';
 
 @NgModule({
   declarations: [AppComponent],
@@ -30,7 +32,14 @@ import { TopBarModule } from './shared/modules/topBar/topBar.module';
     }),
     TopBarModule,
   ],
-  providers: [],
+  providers: [
+    PersistanceService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
