@@ -13,6 +13,7 @@ import { TopBarModule } from './shared/modules/topBar/topBar.module';
 import { PersistanceService } from './shared/services/persistance.service';
 import { AuthInterceptor } from './shared/services/authinterceptor';
 import { GlobalFeedModule } from './globalFeed/globalFeed.module';
+import { routerReducer, StoreRouterConnectingModule } from '@ngrx/router-store';
 
 @NgModule({
   declarations: [AppComponent],
@@ -24,7 +25,7 @@ import { GlobalFeedModule } from './globalFeed/globalFeed.module';
     AuthModule,
     GlobalFeedModule,
     EffectsModule.forRoot([]),
-    StoreModule.forRoot([]),
+    StoreModule.forRoot({ router: routerReducer }),
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states
       logOnly: !isDevMode(), // Restrict extension to log-only mode
@@ -33,6 +34,7 @@ import { GlobalFeedModule } from './globalFeed/globalFeed.module';
       traceLimit: 75, // maximum stack trace frames to be stored (in case trace option was provided as true)
     }),
     TopBarModule,
+    StoreRouterConnectingModule.forRoot(),
   ],
   providers: [
     PersistanceService,
